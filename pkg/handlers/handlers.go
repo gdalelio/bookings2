@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gdalelio/bookings/pkg/config"
@@ -17,19 +19,19 @@ type Repository struct {
 	App *config.AppConfig
 }
 
-//NewRepo creates a new repository
+// NewRepo creates a new repository
 func NewRepo(a *config.AppConfig) *Repository {
 	return &Repository{
 		App: a,
 	}
 }
 
-//NewHandlers sets the repository for the handlers
+// NewHandlers sets the repository for the handlers
 func NewHandlers(r *Repository) {
 	Repo = r
 }
 
-//Home is the home page handler
+// Home is the home page handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	remoteIP := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
@@ -37,7 +39,7 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 
-//About is the about page handler
+// About is the about page handler
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	/* stringMap := make(map[string]string)
 	stringMap["test"] = "Hello Again"
@@ -51,7 +53,7 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-//Generals is the room page handler
+// Generals is the room page handler
 func (m *Repository) Generals(w http.ResponseWriter, r *http.Request) {
 	remoteIP := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
@@ -59,7 +61,7 @@ func (m *Repository) Generals(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "generals.page.tmpl", &models.TemplateData{})
 }
 
-//Majors is the room page handler
+// Majors is the room page handler
 func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
 	remoteIP := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
@@ -67,7 +69,7 @@ func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "majors.page.tmpl", &models.TemplateData{})
 }
 
-//CheckAvailability is the check availability page handler
+// CheckAvailability is the check availability page handler
 func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 	remoteIP := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
@@ -75,7 +77,7 @@ func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "search-availability.page.tmpl", &models.TemplateData{})
 }
 
-//PostAvailability is the check availability page handler
+// PostAvailability is the check availability page handler
 func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
@@ -83,7 +85,30 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(fmt.Sprintf("Start Date is %s and end date is %s", start, end)))
 }
 
-//Reservation is the check availability page handler
+// Keep as close to code that uses this type
+type jsonResponse struct {
+	OK      bool   `json:"ok"`
+	Message string `message:"Available"`
+}
+
+// PostAvailabilityJSON handles request for availability and send JSON response
+func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
+	resp := jsonResponse{
+		OK:      false,
+		Message: "Available!",
+	}
+
+	out, err := json.MarshalIndent(resp, "", "     ")
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(string(out))
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+
+}
+
+// Reservation is the check availability page handler
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 	remoteIP := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
