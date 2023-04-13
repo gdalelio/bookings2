@@ -3,9 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/gdalelio/bookings/pkg/config"
-	"github.com/gdalelio/bookings/pkg/handlers"
-
+	"github.com/gdalelio/bookings/internal/config"
+	"github.com/gdalelio/bookings/internal/handlers"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )

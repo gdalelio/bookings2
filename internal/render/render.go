@@ -7,25 +7,25 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/gdalelio/bookings/pkg/config"
-	"github.com/gdalelio/bookings/pkg/models"
+	"github.com/gdalelio/bookings/internal/config"
+	"github.com/gdalelio/bookings/internal/models"
 	"github.com/justinas/nosurf"
 )
 
 var app *config.AppConfig
 
-//NewTemplates sets the config for the template package
+// NewTemplates sets the config for the template package
 func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-//AddDefaultData adds any data for all pages
+// AddDefaultData adds any data for all pages
 func AddDefaultData(templateData *models.TemplateData, r *http.Request) *models.TemplateData {
 	templateData.CSRFToken = nosurf.Token(r)
 	return templateData
 }
 
-//RenderTemplate renders templates using html/template
+// RenderTemplate renders templates using html/template
 func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, templateData *models.TemplateData) {
 	var templateCache map[string]*template.Template
 

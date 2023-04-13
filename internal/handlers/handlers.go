@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gdalelio/bookings/pkg/config"
-	"github.com/gdalelio/bookings/pkg/models"
-	"github.com/gdalelio/bookings/pkg/render"
+	"github.com/gdalelio/bookings/internal/config"
+	"github.com/gdalelio/bookings/internal/models"
+	"github.com/gdalelio/bookings/internal/render"
 )
 
 // Repo the repository used by the handlers

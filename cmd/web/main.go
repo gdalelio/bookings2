@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/gdalelio/bookings/pkg/config"
-	"github.com/gdalelio/bookings/pkg/handlers"
-	"github.com/gdalelio/bookings/pkg/render"
+	"github.com/gdalelio/bookings/internal/config"
+	"github.com/gdalelio/bookings/internal/handlers"
+	"github.com/gdalelio/bookings/internal/render"
 )
 
 // web based application for "Hello World!"
