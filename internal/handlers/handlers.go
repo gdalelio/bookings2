@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gdalelio/bookings/internal/config"
+	"github.com/gdalelio/bookings/internal/forms"
 	"github.com/gdalelio/bookings/internal/models"
 	"github.com/gdalelio/bookings/internal/render"
 )
@@ -110,19 +111,27 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 // Reservation is the check availability page handler
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+	})
 
-	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{})
 }
 
-// Make-Reservation is the check availability page handler
+// Post Reservation handles the posting of a reservation form
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+	/*
+		 	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+				Form: forms.New(nil),
+			})
+	*/
+}
+
+/* //Make-Reservation is the check availability page handler
 func (m *Repository) Make_Reservation(w http.ResponseWriter, r *http.Request) {
 	remoteIP := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
 
-	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{})
-}
+} */
 
 // Contact page handler
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
