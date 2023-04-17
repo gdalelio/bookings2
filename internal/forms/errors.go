@@ -1,5 +1,6 @@
 package forms
 
+//Errors is a slice so that it can hold multiple fields
 type errors map[string] []string
 
 //Add adds an error message for a given form field
