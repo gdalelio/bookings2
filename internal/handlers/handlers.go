@@ -135,7 +135,9 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	form.IsEmail("email")
 
 	if !form.Valid() {
+		//validated the form and creating map of data from the form
 		data := make(map[string]interface{})
+		//putting the reservation information into the data slice for use later
 		data["reservation"] = reservation
 
 		render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
@@ -179,6 +181,9 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
+	//removing data from the reservation
+	m.App.Session.Remove(r.Context(), "reservation")
+	
 	//map for reservation data
 	data := make(map[string]interface{})
 	//looking up the reservation using the "reservation" keu
