@@ -161,6 +161,7 @@ func (m *Repository) Make_Reservation(w http.ResponseWriter, r *http.Request) {
 
 // Contact page handler
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
+	//pulling IP and capturing it in the session model
 	remoteIP := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
 
@@ -169,10 +170,13 @@ func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
 
 // ReservationSummary
 func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
+	//pulling reservation out of the session and casting it to models.Reservation
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
 		log.Println("Cannot get item from session")
-		
+		m.App.Session.Put(r.Context(), "error", "can't get reservation from session")
+		//redirect the user to the home page temporarily
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 	//map for reservation data

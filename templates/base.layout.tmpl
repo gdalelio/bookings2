@@ -83,6 +83,7 @@
 
     {{block "content" .}}
 
+
     {{end}}
 
 
@@ -155,6 +156,21 @@
             })
         }
 
+        { { with .Error} }
+        notify("{{.}}", "error");
+        { { end } }
+
+        { { with .Flash} }
+        notify("{{.}}", "success");
+        { { end } }
+
+        { { with .Warning} }
+        notify("{{.}}", "warning");
+        { { end } }
+
+
+
+        //Prompt is our java script for all alerts, notifications, and custom pop up dialogs
         function Prompt() {
             let toast = function (c) {
                 const {
@@ -267,6 +283,8 @@
                 custom: custom,
             }
         }
+
+
 
     </script>
 
