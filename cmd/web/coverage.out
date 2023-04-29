@@ -6,8 +6,6 @@ github.com/gdalelio/bookings/cmd/web/main.go:39.16,41.3 1 0
 github.com/gdalelio/bookings/cmd/web/main.go:46.18,66.16 10 1
 github.com/gdalelio/bookings/cmd/web/main.go:66.16,69.3 2 0
 github.com/gdalelio/bookings/cmd/web/main.go:71.2,80.12 6 1
-github.com/gdalelio/bookings/cmd/web/middleware.go:10.53,11.71 1 0
-github.com/gdalelio/bookings/cmd/web/middleware.go:11.71,15.3 2 0
-github.com/gdalelio/bookings/cmd/web/middleware.go:19.45,28.2 3 1
-github.com/gdalelio/bookings/cmd/web/middleware.go:31.50,33.2 1 1
-github.com/gdalelio/bookings/cmd/web/routes.go:12.49,46.2 18 1
+github.com/gdalelio/bookings/cmd/web/middleware.go:10.45,19.2 3 1
+github.com/gdalelio/bookings/cmd/web/middleware.go:22.50,24.2 1 1
+github.com/gdalelio/bookings/cmd/web/routes.go:12.49,40.2 18 1

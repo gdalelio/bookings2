@@ -36,6 +36,7 @@ func NewHandlers(r *Repository) {
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	remoteIP := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
 	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 
@@ -150,6 +151,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 
 	//reservation summary presented
 	m.App.Session.Put(r.Context(), "reservation", reservation)
+	
 	//do a redirect to prevent from double submission of the form  with Status code 300
 	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
 }
