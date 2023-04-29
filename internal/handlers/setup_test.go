@@ -63,7 +63,7 @@ func getRoutes() http.Handler {
 	mux := chi.NewRouter()
 
 	mux.Use(middleware.Recoverer)
-	mux.Use(NoSurf)
+	//mux.Use(NoSurf)  removed this to allow for testing and not checking for the cross site token
 	mux.Use(SessionLoad)
 
 	mux.Get("/", Repo.Home)
