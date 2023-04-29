@@ -22,6 +22,28 @@ var session *scs.SessionManager
 
 // main is the main application function
 func main() {
+	err := run()
+	if err != run() {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("Starting application on port: %s", portNumber)
+	//	_ = http.ListenAndServe(portNumber, nil) //starts up the webserver to listing on port 8080
+
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
+	}
+
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+}
+
+// Run does the majority of the work
+func run() error {
 	//what am I going to put in the session
 	gob.Register(models.Reservation{})
 	//change this to true when in production
@@ -32,7 +54,9 @@ func main() {
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
 	session.Cookie.SameSite = http.SameSiteLaxMode
-	session.Cookie.Secure = app.InProduction //makes sure it is encrypted. Will need to change later as we have a localhost that doesnt have  https
+
+	//makes sure it is encrypted. Will need to change later as we have a localhost that doesnt have  https
+	session.Cookie.Secure = app.InProduction
 
 	app.Session = session
 
@@ -41,6 +65,7 @@ func main() {
 
 	if err != nil {
 		log.Fatal("cannot create template cache")
+		return err
 	}
 
 	app.TemplateCache = templateCache
@@ -52,15 +77,5 @@ func main() {
 
 	render.NewTemplates(&app) //refernce to the app config
 
-	fmt.Printf(fmt.Sprintf("Starting application on port: %s", portNumber))
-	//	_ = http.ListenAndServe(portNumber, nil) //starts up the webserver to listing on port 8080
-
-	srv := &http.Server{
-		Addr:    portNumber,
-		Handler: routes(&app),
-	}
-
-	err = srv.ListenAndServe()
-	log.Fatal(err)
-
+	return nil
 }

@@ -183,7 +183,7 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 	}
 	//removing data from the reservation
 	m.App.Session.Remove(r.Context(), "reservation")
-	
+
 	//map for reservation data
 	data := make(map[string]interface{})
 	//looking up the reservation using the "reservation" keu
