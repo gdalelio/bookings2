@@ -15,4 +15,5 @@ func TestMain(m *testing.M) {
 type myHandler struct{}
 
 func (mh *myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	//implemented this to allow for creating the http.Handler for use in middleware_test
 }
