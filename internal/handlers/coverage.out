@@ -1,0 +1,22 @@
+mode: set
+github.com/gdalelio/bookings/internal/handlers/handlers.go:24.47,28.2 1 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:31.33,33.2 1 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:36.67,41.2 3 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:44.68,49.2 1 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:52.71,55.2 1 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:58.69,61.2 1 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:64.75,67.2 1 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:70.79,75.2 3 0
+github.com/gdalelio/bookings/internal/handlers/handlers.go:84.79,91.16 3 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:91.16,93.3 1 0
+github.com/gdalelio/bookings/internal/handlers/handlers.go:94.2,96.14 3 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:101.74,116.2 4 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:119.78,121.16 2 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:121.16,124.3 2 0
+github.com/gdalelio/bookings/internal/handlers/handlers.go:126.2,138.19 6 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:138.19,150.3 4 0
+github.com/gdalelio/bookings/internal/handlers/handlers.go:153.2,156.66 2 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:167.70,173.2 3 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:176.81,179.9 2 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:179.9,185.3 4 1
+github.com/gdalelio/bookings/internal/handlers/handlers.go:187.2,196.4 4 0
