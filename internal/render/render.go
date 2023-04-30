@@ -3,10 +3,10 @@ package render
 import (
 	"bytes"
 	"fmt"
-	"text/template"
 	"log"
 	"net/http"
 	"path/filepath"
+	"text/template"
 
 	"github.com/gdalelio/bookings/internal/config"
 	"github.com/gdalelio/bookings/internal/models"
