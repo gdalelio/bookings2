@@ -2,6 +2,7 @@ package forms
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -42,7 +43,7 @@ func (f *Form) Required(fields ...string) {
 
 // Has checks if the form field is in post and not empty
 func (f *Form) Has(field string, r *http.Request) bool {
-	x := r.Form.Get(field)
+	x := f.Get(field)
 	if x == "" {
 		return false
 	}
@@ -60,16 +61,16 @@ func (f *Form) MinLength(field string, length int, r *http.Request) bool {
 	return true
 }
 
-//IsEmail checks for valid eamil address
-func (f *Form) IsEmail(field string){
-	if !govalidator.IsEmail(f.Get(field)){
+// IsEmail checks for valid eamil address
+func (f *Form) IsEmail(field string) {
+	if !govalidator.IsEmail(f.Get(field)) {
 		f.Errors.Add(field, "Invalid email address")
 	}
 }
 
 func (f *Form) IsPhone(field string) {
 
-	if !govalidator.IsDialString(field){
-		
+	if !govalidator.IsDialString(field) {
+		log.Println("nothing to do in IsPhone")
 	}
 }
