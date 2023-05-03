@@ -1,0 +1,20 @@
+mode: set
+github.com/gdalelio/bookings/internal/forms/errors.go:7.44,9.2 1 1
+github.com/gdalelio/bookings/internal/forms/errors.go:13.42,15.27 2 0
+github.com/gdalelio/bookings/internal/forms/errors.go:15.27,17.3 1 0
+github.com/gdalelio/bookings/internal/forms/errors.go:18.1,18.22 1 0
+github.com/gdalelio/bookings/internal/forms/forms.go:19.29,21.2 1 1
+github.com/gdalelio/bookings/internal/forms/forms.go:24.33,30.2 1 1
+github.com/gdalelio/bookings/internal/forms/forms.go:33.43,34.31 1 1
+github.com/gdalelio/bookings/internal/forms/forms.go:34.31,37.37 2 1
+github.com/gdalelio/bookings/internal/forms/forms.go:37.37,39.4 1 1
+github.com/gdalelio/bookings/internal/forms/forms.go:44.39,46.13 2 1
+github.com/gdalelio/bookings/internal/forms/forms.go:46.13,48.3 1 1
+github.com/gdalelio/bookings/internal/forms/forms.go:49.2,49.13 1 1
+github.com/gdalelio/bookings/internal/forms/forms.go:53.57,56.21 2 1
+github.com/gdalelio/bookings/internal/forms/forms.go:56.21,59.3 2 1
+github.com/gdalelio/bookings/internal/forms/forms.go:60.2,60.13 1 1
+github.com/gdalelio/bookings/internal/forms/forms.go:64.38,65.40 1 1
+github.com/gdalelio/bookings/internal/forms/forms.go:65.40,67.3 1 1
+github.com/gdalelio/bookings/internal/forms/forms.go:70.38,72.45 1 1
+github.com/gdalelio/bookings/internal/forms/forms.go:72.45,74.3 1 1

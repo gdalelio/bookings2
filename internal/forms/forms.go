@@ -3,7 +3,6 @@ package forms
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"net/url"
 	"strings"
 
@@ -42,7 +41,7 @@ func (f *Form) Required(fields ...string) {
 }
 
 // Has checks if the form field is in post and not empty
-func (f *Form) Has(field string, r *http.Request) bool {
+func (f *Form) Has(field string) bool {
 	x := f.Get(field)
 	if x == "" {
 		return false
@@ -51,8 +50,8 @@ func (f *Form) Has(field string, r *http.Request) bool {
 }
 
 // MinLength checks for minimum length for field
-func (f *Form) MinLength(field string, length int, r *http.Request) bool {
-	x := r.Form.Get(field)
+func (f *Form) MinLength(field string, length int) bool {
+	x := f.Get(field)
 
 	if len(x) < length {
 		f.Errors.Add(field, fmt.Sprintf("This field must be at least %d charachters long", length))
@@ -70,7 +69,7 @@ func (f *Form) IsEmail(field string) {
 
 func (f *Form) IsPhone(field string) {
 
-	if !govalidator.IsDialString(field) {
-		log.Println("nothing to do in IsPhone")
+	if !govalidator.IsDialString(f.Get(field)) {
+		log.Println("invalid dial string")
 	}
 }
