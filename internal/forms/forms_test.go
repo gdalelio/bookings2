@@ -174,7 +174,7 @@ func TestForm_IsPhone(t *testing.T) {
 		t.Error("form shows valid for non-existent field")
 	}
 
-	//****  testing a valid email address  ****
+	//****  testing a valid phone number  ****
 
 	postedValues = url.Values{}
 	postedValues.Add("phone", "555-555-5555")
@@ -184,7 +184,7 @@ func TestForm_IsPhone(t *testing.T) {
 	if !form.Valid() {
 		t.Error("got an invalid phone number type")
 	}
-	//****  testing an invalid email address  ****
+	//****  testing an invalid phone number  ****
 	postedValues = url.Values{}
 	postedValues.Add("phone", "(703)-555-1212")
 

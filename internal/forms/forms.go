@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/asaskevich/govalidator"
@@ -69,7 +70,26 @@ func (f *Form) IsEmail(field string) {
 
 func (f *Form) IsPhone(field string) {
 
-	if !govalidator.IsDialString(f.Get(field)) {
-		log.Println("invalid dial string")
+	//set up the regex pattern to be matched against
+	re := regexp.MustCompile(`^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$`)
+	str := f.Get(field)
+	strLen := len(str)
+	minLength := 10
+
+	//check to see if the phone number is the minimum length
+	if strLen < minLength {
+		log.Println("****************************************************************")
+		log.Printf("number doesn't meet min length for phone number %s. Was %d and should be %d", str, strLen, minLength)
+		log.Println("****************************************************************")
+	} else {
+		//check to see if the string matches the phone format
+		valid := re.MatchString(str)
+
+		if !valid {
+			log.Printf("Phone number is invalid format: %s", str)
+		} else {
+			log.Printf("Phone number is valid format: %s", str)
+		}
 	}
+
 }
