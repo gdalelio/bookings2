@@ -1,6 +1,7 @@
 package forms
 
 import (
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -158,7 +159,6 @@ func TestForm_IsEmail(t *testing.T) {
 
 }
 func TestForm_IsPhone(t *testing.T) {
-	//request := httptest.NewRequest("POST", "/whatever", nil)
 
 	//****  testing a form without an phone field  ****//
 	//create a request as HAS needs a request when it is called
@@ -170,8 +170,9 @@ func TestForm_IsPhone(t *testing.T) {
 	// check to see that form is valid
 	form.IsPhone("phone")
 
-	if !form.Valid() {
+	if form.Valid() {
 		t.Error("form shows valid for non-existent field")
+		log.Println("passed the emplty field test")
 	}
 
 	//****  testing a valid phone number  ****

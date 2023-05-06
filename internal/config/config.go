@@ -13,4 +13,5 @@ type AppConfig struct {
 	InfoLog       *log.Logger
 	InProduction  bool
 	Session       *scs.SessionManager
+	MinPhoneLen  int
 }
