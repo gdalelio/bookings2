@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/gdalelio/bookings/internal/config"
 	"github.com/gdalelio/bookings/internal/handlers"
+	"github.com/gdalelio/bookings/internal/helpers"
 	"github.com/gdalelio/bookings/internal/models"
 	"github.com/gdalelio/bookings/internal/render"
 )
@@ -19,6 +21,8 @@ const portNumber = ":8080"
 
 var app config.AppConfig
 var session *scs.SessionManager
+var infoLog *log.Logger
+var errorLog *log.Logger
 
 // main is the main application function
 func main() {
@@ -48,6 +52,15 @@ func run() error {
 	gob.Register(models.Reservation{})
 	//change this to true when in production
 	app.InProduction = false
+	//set the minimum lenght for the phone number to be valid
+	app.MinPhoneLen = 10
+
+	//set up logging
+	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+
+	errorLog = log.New(os.Stdout, "Error\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
 
 	//setting up session parameters
 	session = scs.New()
@@ -76,6 +89,7 @@ func run() error {
 	handlers.NewHandlers(repo)
 
 	render.NewTemplates(&app) //refernce to the app config
+	helpers.NewHelpers(&app) //refernce to the app config
 
 	return nil
 }
