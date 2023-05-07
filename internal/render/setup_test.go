@@ -2,6 +2,7 @@ package render
 
 import (
 	"encoding/gob"
+	"log"
 	"net/http"
 	"os"
 	"testing"
@@ -11,23 +12,30 @@ import (
 	"github.com/gdalelio/bookings/internal/config"
 	"github.com/gdalelio/bookings/internal/models"
 )
-//need for a session object for testing
+
+// need for a session object for testing
 var session *scs.SessionManager
 
-//need to be able to create a copy of the app object in render.go - and will
-//assign a pointer to it to alloow for testing
+// need to be able to create a copy of the app object in render.go - and will
+// assign a pointer to it to alloow for testing
 var testApp config.AppConfig
 
-
-//TestMain is a tesing object for testing main
+// TestMain is a tesing object for testing main
 func TestMain(m *testing.M) {
 
 	//what am I going to put in the session
 	gob.Register(models.Reservation{})
-	
+
 	//change this to true when in production
-	//using testApp as we don't have the app object as we are testing this 
+	//using testApp as we don't have the app object as we are testing this
 	testApp.InProduction = false
+
+	//set up information log
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	testApp.InfoLog = infoLog
+	//setting up error log
+	errorLog := log.New(os.Stdout, "Error\t", log.Ldate|log.Ltime|log.Lshortfile)
+	testApp.ErrorLog = errorLog
 
 	//setting up session parameters
 	session = scs.New()

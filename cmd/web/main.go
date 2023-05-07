@@ -52,13 +52,12 @@ func run() error {
 	gob.Register(models.Reservation{})
 	//change this to true when in production
 	app.InProduction = false
-	//set the minimum lenght for the phone number to be valid
-	app.MinPhoneLen = 10
+	
 
-	//set up logging
+	//set up information log
 	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	app.InfoLog = infoLog
-
+	//setting up error log
 	errorLog = log.New(os.Stdout, "Error\t", log.Ldate|log.Ltime|log.Lshortfile)
 	app.ErrorLog = errorLog
 
@@ -89,7 +88,7 @@ func run() error {
 	handlers.NewHandlers(repo)
 
 	render.NewTemplates(&app) //refernce to the app config
-	helpers.NewHelpers(&app) //refernce to the app config
+	helpers.NewHelpers(&app)  //refernce to the app config
 
 	return nil
 }

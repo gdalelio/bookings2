@@ -9,10 +9,13 @@ import (
 )
 
 var app *config.AppConfig
+var MinPhoneLen int
 
 // NewHelpers set up app config for helpers
 func NewHelpers(a *config.AppConfig) {
 	app = a
+	MinPhoneLen = app.MinPhoneLen
+	MinPhoneLen = 10
 }
 
 func ClientError(w http.ResponseWriter, status int) {

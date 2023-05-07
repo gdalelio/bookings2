@@ -1,7 +1,6 @@
 package forms
 
 import (
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -169,10 +168,8 @@ func TestForm_IsPhone(t *testing.T) {
 
 	// check to see that form is valid
 	form.IsPhone("phone")
-
 	if form.Valid() {
 		t.Error("form shows valid for non-existent field")
-		log.Println("passed the emplty field test")
 	}
 
 	//****  testing a valid phone number  ****

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/asaskevich/govalidator"
+	"github.com/gdalelio/bookings/internal/helpers"
 )
 
 // Form creates a custom form struct, embeds a url.Values object
@@ -73,7 +74,7 @@ func (f *Form) IsPhone(field string) bool {
 	re := regexp.MustCompile(`^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$`)
 	str := f.Get(field)
 	strLen := len(str)
-	minLength := 10
+	minLength := helpers.MinPhoneLen
 
 	//check to see if the phone number is the minimum length
 
