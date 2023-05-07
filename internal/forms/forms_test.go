@@ -125,7 +125,7 @@ func TestForm_MinLength(t *testing.T) {
 func TestForm_IsEmail(t *testing.T) {
 
 	//****  testing a form without an email field  ****//
-	//create a request as HAS needs a request when it is called
+	//create a request as IsMail needs a request when it is called
 	postedValues := url.Values{}
 
 	//create form for the request
@@ -133,7 +133,6 @@ func TestForm_IsEmail(t *testing.T) {
 
 	// check to see that form is valid
 	form.IsEmail("email")
-
 	if form.Valid() {
 		t.Error("form shows valid for non-existend field")
 	}
@@ -158,9 +157,8 @@ func TestForm_IsEmail(t *testing.T) {
 
 }
 func TestForm_IsPhone(t *testing.T) {
-
 	//****  testing a form without an phone field  ****//
-	//create a request as HAS needs a request when it is called
+	//create a request as IsPhone needs a request when it is called
 	postedValues := url.Values{}
 
 	//create form for the request
@@ -173,9 +171,8 @@ func TestForm_IsPhone(t *testing.T) {
 	}
 
 	//****  testing a valid phone number  ****
-
 	postedValues = url.Values{}
-	postedValues.Add("phone", "555-555-5555")
+	postedValues.Add("phone", "555-555555")
 
 	form = New(postedValues)
 	form.IsPhone("phone")

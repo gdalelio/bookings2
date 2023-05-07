@@ -1,0 +1,46 @@
+?   	github.com/gdalelio/bookings/internal/config	[no test files]
+=== RUN   TestRun
+--- PASS: TestRun (0.00s)
+=== RUN   TestNoSurf
+--- PASS: TestNoSurf (0.00s)
+=== RUN   TestSessionLoad
+--- PASS: TestSessionLoad (0.00s)
+=== RUN   TestRoutes
+--- PASS: TestRoutes (0.00s)
+PASS
+ok  	github.com/gdalelio/bookings/cmd/web	(cached)
+?   	github.com/gdalelio/bookings/internal/helpers	[no test files]
+?   	github.com/gdalelio/bookings/internal/models	[no test files]
+=== RUN   TestForm_Valid
+--- PASS: TestForm_Valid (0.00s)
+=== RUN   TestForm_Required
+--- PASS: TestForm_Required (0.00s)
+=== RUN   TestForm_Has
+--- PASS: TestForm_Has (0.00s)
+=== RUN   TestForm_MinLength
+--- PASS: TestForm_MinLength (0.00s)
+=== RUN   TestForm_IsEmail
+--- PASS: TestForm_IsEmail (0.00s)
+=== RUN   TestForm_IsPhone
+    forms_test.go:172: form shows valid for non-existent field
+--- FAIL: TestForm_IsPhone (0.00s)
+FAIL
+FAIL	github.com/gdalelio/bookings/internal/forms	0.119s
+=== RUN   TestHandlers
+2023/05/07 02:18:45 {
+     "ok": false,
+     "Message": "Available!"
+}
+Error	2023/05/07 02:18:45 handlers.go:168: can't get error from session
+--- PASS: TestHandlers (0.07s)
+PASS
+ok  	github.com/gdalelio/bookings/internal/handlers	(cached)
+=== RUN   TestAddDefaultData
+--- PASS: TestAddDefaultData (0.00s)
+=== RUN   TestNewTemplates
+--- PASS: TestNewTemplates (0.00s)
+=== RUN   TestCreateTemplateCache
+--- PASS: TestCreateTemplateCache (0.02s)
+PASS
+ok  	github.com/gdalelio/bookings/internal/render	(cached)
+FAIL
