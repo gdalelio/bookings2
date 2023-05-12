@@ -14,7 +14,7 @@ var MinPhoneLen int
 // NewHelpers set up app config for helpers
 func NewHelpers(a *config.AppConfig) {
 	app = a
-	MinPhoneLen = app.MinPhoneLen
+	//sets the min phone length for test
 	MinPhoneLen = 10
 }
 

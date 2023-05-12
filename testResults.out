@@ -9,8 +9,6 @@
 --- PASS: TestRoutes (0.00s)
 PASS
 ok  	github.com/gdalelio/bookings/cmd/web	(cached)
-?   	github.com/gdalelio/bookings/internal/helpers	[no test files]
-?   	github.com/gdalelio/bookings/internal/models	[no test files]
 === RUN   TestForm_Valid
 --- PASS: TestForm_Valid (0.00s)
 === RUN   TestForm_Required
@@ -22,17 +20,22 @@ ok  	github.com/gdalelio/bookings/cmd/web	(cached)
 === RUN   TestForm_IsEmail
 --- PASS: TestForm_IsEmail (0.00s)
 === RUN   TestForm_IsPhone
-    forms_test.go:170: form shows valid for non-existent field
---- FAIL: TestForm_IsPhone (0.00s)
-FAIL
-FAIL	github.com/gdalelio/bookings/internal/forms	0.132s
+2023/05/12 10:16:28 Phone number minlength 10
+2023/05/12 10:16:28 Phone number minlength 10
+2023/05/12 10:16:28 Phone number minlength 10
+--- PASS: TestForm_IsPhone (0.00s)
+PASS
+ok  	github.com/gdalelio/bookings/internal/forms	(cached)
+?   	github.com/gdalelio/bookings/internal/helpers	[no test files]
+?   	github.com/gdalelio/bookings/internal/models	[no test files]
 === RUN   TestHandlers
-2023/05/07 02:18:45 {
+2023/05/12 10:16:28 {
      "ok": false,
      "Message": "Available!"
 }
-Error	2023/05/07 02:18:45 handlers.go:168: can't get error from session
---- PASS: TestHandlers (0.07s)
+2023/05/12 10:16:28 Phone number minlength 0
+Error	2023/05/12 10:16:28 handlers.go:168: can't get error from session
+--- PASS: TestHandlers (0.03s)
 PASS
 ok  	github.com/gdalelio/bookings/internal/handlers	(cached)
 === RUN   TestAddDefaultData
@@ -40,7 +43,6 @@ ok  	github.com/gdalelio/bookings/internal/handlers	(cached)
 === RUN   TestNewTemplates
 --- PASS: TestNewTemplates (0.00s)
 === RUN   TestCreateTemplateCache
---- PASS: TestCreateTemplateCache (0.02s)
+--- PASS: TestCreateTemplateCache (0.01s)
 PASS
 ok  	github.com/gdalelio/bookings/internal/render	(cached)
-FAIL

@@ -10,6 +10,9 @@ import (
 	"github.com/gdalelio/bookings/internal/helpers"
 )
 
+// set the minimum phone length for
+const MinPhoneLen = 10
+
 // Form creates a custom form struct, embeds a url.Values object
 type Form struct {
 	url.Values
@@ -68,6 +71,7 @@ func (f *Form) IsEmail(field string) {
 	}
 }
 
+// IsPhone tests the phone field for format and length of the entry
 func (f *Form) IsPhone(field string) bool {
 
 	//set up the regex pattern to be matched against
@@ -75,6 +79,8 @@ func (f *Form) IsPhone(field string) bool {
 	str := f.Get(field)
 	strLen := len(str)
 	minLength := helpers.MinPhoneLen
+	// for debugging - remove comment
+	//log.Println("Phone number minlength", minLength)
 
 	//check to see if the phone number is the minimum length
 
