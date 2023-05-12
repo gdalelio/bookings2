@@ -9,7 +9,6 @@ import (
 	"github.com/gdalelio/bookings/internal/config"
 	"github.com/gdalelio/bookings/internal/helpers"
 )
-var app config.AppConfig
 
 func TestForm_Valid(t *testing.T) {
 	request := httptest.NewRequest("POST", "/whaterver", nil)
@@ -163,8 +162,7 @@ func TestForm_IsEmail(t *testing.T) {
 func TestForm_IsPhone(t *testing.T) {
 	//get the min phone length from helpers
 	helpers.NewHelpers(&config.AppConfig{})
-	
-	
+
 	//****  testing a form without an phone field  ****//
 	//create a request as IsPhone needs a request when it is called
 	postedValues := url.Values{}
