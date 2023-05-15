@@ -12,7 +12,7 @@ Application Dependencies:
 - Uses the Jared Reich [notie](https://github.com/jaredreich/notie) notification 
 - Uses the SweetAlert2 [sweetalert2 v10](https://sweetalert2.github.io/v10.html) modal alerts
 - Uses the [govalidator](https://github.com/asaskevich/govalidator) by Alex Saskevich
-- Uses the [Pop](https://github.com/gobuffalo/pop) by Buffalo for database configuration
+- Uses [Pop](https://github.com/gobuffalo/pop) by Buffalo for database configuration
 
 
 
