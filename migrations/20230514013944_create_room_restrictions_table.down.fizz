@@ -1,1 +1,1 @@
-drop_table("room_restriction")
+drop_table("room_restrictions")
