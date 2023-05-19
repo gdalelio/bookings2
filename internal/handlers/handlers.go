@@ -28,6 +28,7 @@ type Repository struct {
 // NewRepo creates a new repository with the app config and dbase connection pool
 // returning a repo back
 func NewRepo(a *config.AppConfig, dbase *driver.DB) *Repository {
+	//creates a new repoository
 	return &Repository{
 		App: a,
 		DB:  dbrepo.NewPostgresRepo(dbase.SQL, a),
@@ -41,6 +42,7 @@ func NewHandlers(r *Repository) {
 
 // Home is the home page handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+
 	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 

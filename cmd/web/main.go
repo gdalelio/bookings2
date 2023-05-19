@@ -1,7 +1,7 @@
 package main
 
 import (
-	"database/sql"
+
 	"encoding/gob"
 	"fmt"
 	"log"
@@ -16,7 +16,7 @@ import (
 	"github.com/gdalelio/bookings/internal/helpers"
 	"github.com/gdalelio/bookings/internal/models"
 	"github.com/gdalelio/bookings/internal/render"
-	"github.com/jackc/pgx/v5/pgconn"
+
 )
 
 // web based application for "Hello World!"
@@ -97,7 +97,7 @@ func run() (*driver.DB, error) {
 	app.TemplateCache = templateCache
 	app.UseCache = false
 
-	//set up handlers and create the repo with a driver for postgresql
+	//set up handlers and create the repo with appropriate db driver  (default is postgres)
 	repo := handlers.NewRepo(&app, dbase)
 	handlers.NewHandlers(repo)
 
