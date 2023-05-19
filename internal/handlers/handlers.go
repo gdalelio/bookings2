@@ -7,10 +7,13 @@ import (
 	"net/http"
 
 	"github.com/gdalelio/bookings/internal/config"
+	"github.com/gdalelio/bookings/internal/driver"
 	"github.com/gdalelio/bookings/internal/forms"
 	"github.com/gdalelio/bookings/internal/helpers"
 	"github.com/gdalelio/bookings/internal/models"
 	"github.com/gdalelio/bookings/internal/render"
+	"github.com/gdalelio/bookings/internal/repository"
+	"github.com/gdalelio/bookings/internal/repository/dbrepo"
 )
 
 // Repo the repository used by the handlers
@@ -19,12 +22,15 @@ var Repo *Repository
 // Repository Type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
-// NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+// NewRepo creates a new repository with the app config and dbase connection pool
+// returning a repo back
+func NewRepo(a *config.AppConfig, dbase *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(dbase.SQL, a),
 	}
 }
 

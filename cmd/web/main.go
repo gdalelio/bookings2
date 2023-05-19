@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/gob"
 	"fmt"
 	"log"
@@ -10,10 +11,12 @@ import (
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/gdalelio/bookings/internal/config"
+	"github.com/gdalelio/bookings/internal/driver"
 	"github.com/gdalelio/bookings/internal/handlers"
 	"github.com/gdalelio/bookings/internal/helpers"
 	"github.com/gdalelio/bookings/internal/models"
 	"github.com/gdalelio/bookings/internal/render"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 // web based application for "Hello World!"
@@ -26,10 +29,14 @@ var errorLog *log.Logger
 
 // main is the main application function
 func main() {
-	err := run()
-	if err != run() {
+	dbase, err := run()
+	if err != nil {
 		log.Fatal(err)
 	}
+
+	//defer the closure of the databse connection
+	//not in run, as it would close right after rhe run finished
+	defer dbase.SQL.Close()
 
 	fmt.Printf("Starting application on port: %s", portNumber)
 	//	_ = http.ListenAndServe(portNumber, nil) //starts up the webserver to listing on port 8080
@@ -47,12 +54,11 @@ func main() {
 }
 
 // Run does the majority of the work
-func run() error {
+func run() (*driver.DB, error) {
 	//what am I going to put in the session
 	gob.Register(models.Reservation{})
 	//change this to true when in production
 	app.InProduction = false
-	
 
 	//set up information log
 	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
@@ -72,23 +78,31 @@ func run() error {
 
 	app.Session = session
 
+	//connect to database
+	log.Println("connecting to database")
+	dbase, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=gdalelio password=")
+	if err != nil {
+		log.Fatal("Cannot connect to the database! Dying....ugh")
+	}
+
+	log.Println("Connected to the database")
 	//create the template cache
 	templateCache, err := render.CreateTemplateCache()
 
 	if err != nil {
 		log.Fatal("cannot create template cache")
-		return err
+		return nil, err
 	}
 
 	app.TemplateCache = templateCache
 	app.UseCache = false
 
-	//set up handlers
-	repo := handlers.NewRepo(&app)
+	//set up handlers and create the repo with a driver for postgresql
+	repo := handlers.NewRepo(&app, dbase)
 	handlers.NewHandlers(repo)
 
 	render.NewTemplates(&app) //refernce to the app config
 	helpers.NewHelpers(&app)  //refernce to the app config
 
-	return nil
+	return dbase, nil
 }
