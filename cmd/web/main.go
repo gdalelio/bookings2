@@ -1,7 +1,6 @@
 package main
 
 import (
-
 	"encoding/gob"
 	"fmt"
 	"log"
@@ -16,7 +15,6 @@ import (
 	"github.com/gdalelio/bookings/internal/helpers"
 	"github.com/gdalelio/bookings/internal/models"
 	"github.com/gdalelio/bookings/internal/render"
-
 )
 
 // web based application for "Hello World!"
@@ -80,7 +78,8 @@ func run() (*driver.DB, error) {
 
 	//connect to database
 	log.Println("connecting to database")
-	dbase, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=gdalelio password=")
+	datbaseSourceName := "host=localhost port=5432 dbname=bookings user=gdalelio password="
+	dbase, err := driver.ConnectSQL(datbaseSourceName)
 	if err != nil {
 		log.Fatal("Cannot connect to the database! Dying....ugh")
 	}

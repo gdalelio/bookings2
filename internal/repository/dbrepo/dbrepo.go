@@ -6,13 +6,12 @@ import (
 	"github.com/gdalelio/bookings/internal/config"
 	"github.com/gdalelio/bookings/internal/repository"
 )
-
-/* ----------------------------------------------
-
-Create the database connections for the specific
-database flavor(s) - initial is PostgreSQL.
-
--------------------------------------------------*/
+/*
+---------------------------------------------------------|
+|    Create the database connections for the specific    |
+|   database flavor(s) - initial is PostgreSQL.          |
+|--------------------------------------------------------|
+*/
 
 // postgresDBRepo struct for the repository with app (pointer to config) and database connection pool
 type postgresDBRepo struct {
