@@ -62,11 +62,12 @@ func getRoutes() http.Handler {
 	app.UseCache = true
 
 	//set up handlers
+	//TODO need to add databae repo to the function call
 	repo := NewRepo(&app)
 	NewHandlers(repo)
 
 	//refernce to the app config
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 
 	mux := chi.NewRouter()
 

@@ -16,10 +16,10 @@ import (
 	"github.com/gdalelio/bookings/internal/repository/dbrepo"
 )
 
-//Repo the repository used by the handlers
+// Repo the repository used by the handlers
 var Repo *Repository
 
-//Repository Type
+// Repository Type
 type Repository struct {
 	App *config.AppConfig
 	DB  repository.DatabaseRepo
@@ -35,42 +35,42 @@ func NewRepo(a *config.AppConfig, dbase *driver.DB) *Repository {
 	}
 }
 
-//NewHandlers sets the repository for the handlers
+// NewHandlers sets the repository for the handlers
 func NewHandlers(r *Repository) {
 	Repo = r
 }
 
-//Home is the home page handler
+// Home is the home page handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 
-	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 
-//About is the about page handler
+// About is the about page handler
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	//send the data to the template
-	render.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "about.page.tmpl", &models.TemplateData{})
 }
 
-//Generals is the room page handler
+// Generals is the room page handler
 func (m *Repository) Generals(w http.ResponseWriter, r *http.Request) {
 
-	render.RenderTemplate(w, r, "generals.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "generals.page.tmpl", &models.TemplateData{})
 }
 
-//Majors is the room page handler
+// Majors is the room page handler
 func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
 
-	render.RenderTemplate(w, r, "majors.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "majors.page.tmpl", &models.TemplateData{})
 }
 
-//CheckAvailability is the check availability page handler
+// CheckAvailability is the check availability page handler
 func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 
-	render.RenderTemplate(w, r, "search-availability.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "search-availability.page.tmpl", &models.TemplateData{})
 }
 
-//PostAvailability is the check availability page handler
+// PostAvailability is the check availability page handler
 func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
@@ -78,13 +78,13 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(fmt.Sprintf("Start Date is %s and end date is %s", start, end)))
 }
 
-//jsonResponse keep as close to code that uses this type
+// jsonResponse keep as close to code that uses this type
 type jsonResponse struct {
 	OK      bool   `json:"ok"`
 	Message string `message:"Available"`
 }
 
-//PostAvailabilityJSON handles request for availability and send JSON response
+// PostAvailabilityJSON handles request for availability and send JSON response
 func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 	resp := jsonResponse{
 		OK:      false,
@@ -102,7 +102,7 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//Reservation is the check availability page handler
+// Reservation is the check availability page handler
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 	//create var to hold the empty reservation type
 	var emptyReservation models.Reservation
@@ -113,14 +113,14 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 	//store the data into the emptyReservation
 	data["reservation"] = emptyReservation
 
-	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+	render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
 		Data: data,
 	})
 
 }
 
-//PostReservation handles the posting of a reservation form
+// PostReservation handles the posting of a reservation form
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -147,7 +147,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		//putting the reservation information into the data slice for use later
 		data["reservation"] = reservation
 
-		render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 			Form: form,
 			Data: data,
 		})
@@ -162,13 +162,13 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
 }
 
-//Contact page handler
+// Contact page handler
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
 	//pulling IP and capturing it in the session model
-	render.RenderTemplate(w, r, "contact.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "contact.page.tmpl", &models.TemplateData{})
 }
 
-//ReservationSummary
+// ReservationSummary
 func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
 	//pulling reservation out of the session and casting it to models.Reservation
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
@@ -187,7 +187,7 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 	//looking up the reservation using the "reservation" keu
 	data["reservation"] = reservation
 
-	render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
+	render.Template(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
 		Data: data,
 	})
 }
