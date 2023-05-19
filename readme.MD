@@ -6,8 +6,10 @@ This repository holds my Bookings and Reservations project that the outcome of t
 
 Application Dependencies:
 - Built in Go Version 1.20
-- Using [chi router v5](https://github.com/go-chi/chi/) - for routing to correct url
-- Using [sweetalert2 v10](https://sweetalert2.github.io/v10.html) - for modal alerts
+
+Includes as part of the project components from the following:
+- Uses [chi router v5](https://github.com/go-chi/chi/) - for routing to correct url
+- Uses [sweetalert2 v10](https://sweetalert2.github.io/v10.html) - for modal alerts
 - Uses Alex Edwards' [SCS](https://github.com/alexedwards/scs) - for Session Management
 - Uses Justinas Stankevičius' [nosurf v2](https://github.com/alexedwards/scs/v2)
 - Uses Jared Reich's [notie](https://github.com/jaredreich/notie) notification 
