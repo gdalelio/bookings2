@@ -20,7 +20,7 @@ Includes as part of the project components from the following:
 
 
 Notes:
-- 4/11/23 - had to rebuild repoistory to allow for committing changes. Inital repo is [bookings] (https://github.com/gdalelio/bookings)
+- 4/11/23 - had to rebuild repoistory to allow for committing changes. Inital repo is [bookings](https://github.com/gdalelio/bookings)
 - govalidator - Is a package of validators and sanitizers for strings, structs and collections. 
 
 
