@@ -5,7 +5,7 @@ This project is the result of hands on development during Udemy's course called 
 
 The application is a full stack web application that uses open-source and code that is developed during the lectured.  The open-source libraries and components are provided below in the list of Application Dependencies.
 
-If you have stopped by -- you must either be lost, or Trevor looking at an issue I have raised. Otherwise, thanks for stopping by!
+If <strong>you have stopped by</strong> -- you must either be lost, or Trevor looking at an issue I have raised. Otherwise, thanks for stopping by!
 
 
 
