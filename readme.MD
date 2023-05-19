@@ -1,5 +1,11 @@
 # Bookings and Reservations
-This repository holds my Bookings and Reservations project that the outcome of the lectures within the Udemy course called [Building Modern Web Applications with Go (Golang)](https://www.udemy.com/course/building-modern-web-applications-with-go/). The course is taught by [Trevor Sawler](https://www.udemy.com/user/trevor-sawler/). 
+Bookings and Reservations Project
+
+This project is the result of hands on development during Udemy's course called [Building Modern Web Applications with Go (Golang)](https://www.udemy.com/course/building-modern-web-applications-with-go/). The course is taught by [Trevor Sawler](https://www.udemy.com/user/trevor-sawler/). 
+
+The application is a full stack web application that uses open-source and code that is developed during the lectured.  The open-source libraries and components are provided below in the list of Application Dependencies.
+
+If you have stopped by -- you must either be lost, or Trevor looking at an issue I have raised. Otherwise, thanks for stopping by!
 
 
 
