@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gdalelio/bookings/internal/config"
 	"github.com/gdalelio/bookings/internal/driver"
@@ -128,11 +130,37 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//dates from the form are strings and will need to be translated to date
+	startDT := r.Form.Get("start_date")
+	endDT := r.Form.Get("end_date")
+
+	//golang data format - 2020-01-01 -- 01//02 03:04:05PM '06  -0700
+	layout := "2006-01-02"
+
+	startDTParsed, err := time.Parse(layout, startDT)
+	if err != nil { //check for eror
+		helpers.ServerError(w, err)
+	}
+
+	endDTParsed, err := time.Parse(layout, endDT)
+	if err != nil { //check for eror
+		helpers.ServerError(w, err)
+	}
+
+	//convert the room id from as string to an int for reservation model
+	roomID, err := strconv.Atoi(r.Form.Get("room_id"))
+	if err != nil { //check for eror
+		helpers.ServerError(w, err)
+	}
+
 	reservation := models.Reservation{
 		FirstName: r.Form.Get("first_name"),
 		LastName:  r.Form.Get("last_name"),
 		Phone:     r.Form.Get("phone"),
 		Email:     r.Form.Get("email"),
+		StartDate: startDTParsed,
+		EndDate:   endDTParsed,
+		RoomID:    roomID,
 	}
 	form := forms.New(r.PostForm)
 
@@ -153,6 +181,12 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		})
 
 		return
+	}
+
+	//pass in the reservation to the model
+	err = m.DB.InsertReservation(reservation)
+	if err != nil {
+		helpers.ServerError(w, err)
 	}
 
 	//reservation summary presented
