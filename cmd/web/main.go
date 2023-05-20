@@ -36,7 +36,7 @@ func main() {
 	//not in run, as it would close right after rhe run finished
 	defer dbase.SQL.Close()
 
-	fmt.Printf("Starting application on port: %s", portNumber)
+	fmt.Printf("Starting application on port: %s\n", portNumber)
 	//	_ = http.ListenAndServe(portNumber, nil) //starts up the webserver to listing on port 8080
 
 	srv := &http.Server{
@@ -105,7 +105,7 @@ func run() (*driver.DB, error) {
 	handlers.NewHandlers(repo)
 
 	render.NewRenderer(&app) //refernce to the app config
-	helpers.NewHelpers(&app)  //refernce to the app config
+	helpers.NewHelpers(&app) //refernce to the app config
 
 	return dbase, nil
 }

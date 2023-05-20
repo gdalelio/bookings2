@@ -137,8 +137,11 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	//golang data format - 2020-01-01 -- 01//02 03:04:05PM '06  -0700
 	layout := "2006-01-02"
 
+	log.Printf("\n starttDt before parsing: %s", startDT)
+	log.Printf("\n endtDt before parsing: %s", endDT)
+
 	startDTParsed, err := time.Parse(layout, startDT)
-	if err != nil { //check for eror
+	if err != nil {
 		helpers.ServerError(w, err)
 	}
 
@@ -152,6 +155,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	if err != nil { //check for eror
 		helpers.ServerError(w, err)
 	}
+	
 
 	reservation := models.Reservation{
 		FirstName: r.Form.Get("first_name"),
