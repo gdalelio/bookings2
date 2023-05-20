@@ -15,35 +15,70 @@ func (model *postgresDBRepo) AllUsers() bool {
 }
 
 // InsertReservation inserts a reservation into the database
-func (model *postgresDBRepo) InsertReservation(reservation models.Reservation) error {
+func (model *postgresDBRepo) InsertReservation(reservation models.Reservation) (int, error) {
 
 	//create a context for use with  execContext for executing the insert statment
 	//uses time out to allow it to die after period of timme.
 	//context.Background is available across the application
 	contxt, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-
 	defer cancel()
+
+	var newID int //used to obtain the rowID of the inserted row
 
 	//building SQL statment for database - with arguments instead of real values - avoids injected sql
 	stmt := `insert into reservations (first_name, last_name, email, phone, start_date, 
-			end_date,  created_at, updated_at,room_id)
-			values ($1,$2,$3,$4,$5,$6,$7,$8, $9)`
+			end_date,room_id, created_at, updated_at)
+			values ($1,$2,$3,$4,$5,$6,$7,$8, $9) returning id`
+
 	//log.Printf("\n %s", stmt)  <-------for debugging the insert statement
 	//returns an result and error - only care about the case of an error; uses context
-	_, err := model.DB.ExecContext(contxt, stmt,
+	//need the id of inserted id to use in the room_restrictions_id in newID
+
+	err := model.DB.QueryRowContext(contxt, stmt,
 		reservation.FirstName,
 		reservation.LastName,
 		reservation.Email,
 		reservation.Phone,
 		reservation.StartDate,
 		reservation.EndDate,
-		time.Now(),
-		time.Now(),
 		reservation.RoomID,
+		time.Now(),
+		time.Now(),
+	).Scan(&newID)
+
+	if err != nil {
+		log.Println("returning error after trying to insert reservation!")
+		return 0, err
+	}
+	return newID, nil
+}
+
+// InsertRoomRestriction inserts a room restriction into the database
+// TODO need to roll back reservation insert if the room restriction isn't succesful - we have the reservation # 
+func (model *postgresDBRepo) InsertRoomRestriction(restriction models.RoomRestriction) error {
+	contxt, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	stmt := `insert into room_restrictions (start_date,	end_date, room_id, reservation_id, 
+			 created_at, updated_at,restriction_id)
+			 values
+			 ($1, $2, $3, $4, $5, $6, $7)`
+
+	_, err := model.DB.ExecContext(contxt, stmt,
+		restriction.StartDate,
+		restriction.EndDate,
+		restriction.RoomID,
+		restriction.ReservaationID,
+		time.Now(),
+		time.Now(),
+		restriction.RestrictionID,
 	)
 	if err != nil {
-		log.Println("returning error after trying to insert")
+		log.Println("returning error after trying to insert roomRestriction row!")
 		return err
+
 	}
+
 	return nil
+
 }
