@@ -8,7 +8,7 @@ import (
 	"github.com/gdalelio/bookings/internal/models"
 )
 
-// AllUsers function with a mdoel returned as a postgres repo
+// AllUsers function with a model returned as a postgres repo
 func (model *postgresDBRepo) AllUsers() bool {
 
 	return true
@@ -83,8 +83,8 @@ func (model *postgresDBRepo) InsertRoomRestriction(restriction models.RoomRestri
 
 }
 
-//SearchAvailabilityByRoomID returns true if availability exists for room id, and false if no availability exists
-func (model *postgresDBRepo) SearchAvailabilityByRoomID(startDT, endDT time.Time, roomID int) (bool, error) {
+// SearchAvailabilityByDatesByRoomID returns true if availability exists for room id, and false if no availability exists
+func (model *postgresDBRepo) SearchAvailabilityByDatesByRoomID(startDT, endDT time.Time, roomID int) (bool, error) {
 	contxt, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -114,5 +114,40 @@ func (model *postgresDBRepo) SearchAvailabilityByRoomID(startDT, endDT time.Time
 	return false, nil
 }
 
+// SearchRoomAvailabilityForAllRooms returns a slice of available roooms if any by given date
+func (models *postgresDBRepo) SearchRoomAvailabilityForAllRooms(startDT, endDT time.Time) ([]models.Room, error) {
+	contxt, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
 
-//Rooms Available for the dates provided in search availability
+	var rooms []models.Room
+
+	// checking for availabilty of any rooms that have available dates; start_date = $1 and end_date =$2
+	query := `
+			Select
+				r.id, r.room_name
+			from
+				rooms r
+			where r.id not in 
+			(select rr.room_id from room_restrictions rr where $1 < rr.end_date and $2 > rr.start_date);
+			`
+	rows, err := models.DB.QueryContext(contxt, query, startDT, endDT)
+	if err != nil {
+		return rooms, err
+	}
+
+	for rows.Next() {
+		var room models.Room
+		err := rows.Scan(
+			&room.ID,
+			&room.RoomName,
+		)
+		if err != nil {
+			return rooms, err
+		}
+		rooms = append(rooms, room)
+	}
+	if err = rows.Err(); err != nil {
+		return rooms, err
+	}
+	return rooms, nil
+}
