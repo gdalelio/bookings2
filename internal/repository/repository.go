@@ -16,5 +16,5 @@ type DatabaseRepo interface {
 	//otherwise there is an extra row in reservations that don't match the room restrictions
 	InsertRoomRestriction(restriction models.RoomRestriction) error
 
-	SearchAvailabilityByDates(startDT, endDT time.Time, roomID int) (bool, error)
+	SearchAvailabilityByRoomID(startDT, endDT time.Time, roomID int) (bool, error)
 }
