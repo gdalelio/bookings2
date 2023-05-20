@@ -54,7 +54,7 @@ func (model *postgresDBRepo) InsertReservation(reservation models.Reservation) (
 }
 
 // InsertRoomRestriction inserts a room restriction into the database
-// TODO need to roll back reservation insert if the room restriction isn't succesful - we have the reservation # 
+// TODO need to roll back reservation insert if the room restriction isn't succesful - we have the reservation #
 func (model *postgresDBRepo) InsertRoomRestriction(restriction models.RoomRestriction) error {
 	contxt, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -68,7 +68,7 @@ func (model *postgresDBRepo) InsertRoomRestriction(restriction models.RoomRestri
 		restriction.StartDate,
 		restriction.EndDate,
 		restriction.RoomID,
-		restriction.ReservaationID,
+		restriction.ReservationID,
 		time.Now(),
 		time.Now(),
 		restriction.RestrictionID,
@@ -82,3 +82,37 @@ func (model *postgresDBRepo) InsertRoomRestriction(restriction models.RoomRestri
 	return nil
 
 }
+
+//SearchAvailabilityByDates returns true if availability exists for room id, and false if no availability exists
+func (model *postgresDBRepo) SearchAvailabilityByDates(startDT, endDT time.Time, roomID int) (bool, error) {
+	contxt, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	//number of rows returned from query
+	var numRows int
+
+	//room id = $1, start date = $2, and end date is $3
+	query := `
+		select 
+	   		count (id) 
+		from 
+			room_restrictions 
+		where 
+			room_id = $1
+		 	and $2 < end_date and $3 > start_date;`
+
+	row := model.DB.QueryRowContext(contxt, query, startDT, endDT)
+	err := row.Scan(&numRows)
+
+	if err != nil {
+		log.Println("SearchAvailablityByDates failed")
+		return false, err
+	}
+	if numRows == 0 {
+		return true, nil
+	}
+	return false, nil
+}
+
+
+//Rooms Available for the dates provided in search availability

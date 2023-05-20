@@ -199,7 +199,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		StartDate:      startDTParsed,
 		EndDate:        endDTParsed,
 		RoomID:         roomID,
-		ReservaationID: newReservationID,
+		ReservationID: newReservationID,
 		RestrictionID:  1,
 	}
 
