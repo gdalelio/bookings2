@@ -74,10 +74,39 @@ func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 
 // PostAvailability is the check availability page handler
 func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
+	//grabs strings for start and end
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
 
-	w.Write([]byte(fmt.Sprintf("Start Date is %s and end date is %s", start, end)))
+	//set the data format for parsing the date string into time.Time format
+	layout := "2006-01-02"
+
+	startDTParsed, err := time.Parse(layout, start)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	endDTParsed, err := time.Parse(layout, end)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	rooms, err := m.DB.SearchRoomAvailabilityForAllRooms(startDTParsed, endDTParsed)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	for _, i := range rooms {
+		m.App.InfoLog.Println("Room:", i.ID, i.RoomName)
+	}
+
+	_, err = w.Write([]byte(fmt.Sprintf("Start date is %s and end date is %s", start, end)))
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
 }
 
 // jsonResponse keep as close to code that uses this type
@@ -196,11 +225,11 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	restriction := models.RoomRestriction{
-		StartDate:      startDTParsed,
-		EndDate:        endDTParsed,
-		RoomID:         roomID,
+		StartDate:     startDTParsed,
+		EndDate:       endDTParsed,
+		RoomID:        roomID,
 		ReservationID: newReservationID,
-		RestrictionID:  1,
+		RestrictionID: 1,
 	}
 
 	err = m.DB.InsertRoomRestriction(restriction)
