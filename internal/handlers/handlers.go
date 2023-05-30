@@ -80,7 +80,7 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	end := r.Form.Get("end")
 
 	//set the data format for parsing the date string into time.Time format
-	layout := "2006-01-02"
+	layout := "01-02-2006"
 
 	startDTParsed, err := time.Parse(layout, start)
 	if err != nil {
@@ -159,8 +159,8 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//put start and end dates into strings and into Reservation
-	startDT := reservation.StartDate.Format("2006-01-02")
-	endDT := reservation.EndDate.Format("2006-01-02")
+	startDT := reservation.StartDate.Format("01-02-2006")
+	endDT := reservation.EndDate.Format("01-02-2006")
 	stringMap := make(map[string]string)
 	stringMap["start_date"] = startDT
 	stringMap["end_date"] = endDT
@@ -192,7 +192,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	endDT := r.Form.Get("end_date")
 
 	//golang data format - 2020-01-01 -- 01//02 03:04:05PM '06  -0700
-	layout := "2006-01-02"
+	layout := "01-02-2006"
 
 	log.Printf("\n starttDt before parsing: %s", startDT)
 	log.Printf("\n endtDt before parsing: %s", endDT)
