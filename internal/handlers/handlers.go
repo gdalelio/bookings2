@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
 	"strconv"
@@ -151,18 +152,29 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 // Reservation is the check availability page handler
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	//create var to hold the empty reservation type
-	var emptyReservation models.Reservation
+	//get reservation variable in the session and stick the room id into the varaiable and put into reservation
+	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		helpers.ServerError(w, errors.New("cannot get reservation from session"))
+		return
+	}
+	//put start and end dates into strings and into Reservation
+	startDT := reservation.StartDate.Format("2006-01-02")
+	endDT := reservation.EndDate.Format("2006-01-02")
+	stringMap := make(map[string]string)
+	stringMap["start_date"] = startDT
+	stringMap["end_date"] = endDT
 
 	//create a map to store the entries on the form
 	data := make(map[string]interface{})
 
 	//store the data into the emptyReservation
-	data["reservation"] = emptyReservation
+	data["reservation"] = reservation
 
 	render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
-		Form: forms.New(nil),
-		Data: data,
+		Form:      forms.New(nil),
+		Data:      data,
+		StringMap: stringMap,
 	})
 
 }
