@@ -158,6 +158,15 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 		helpers.ServerError(w, errors.New("cannot get reservation from session"))
 		return
 	}
+	//retrieve room name by Id
+	room, err := m.DB.GetRoomByID(reservation.RoomID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	//add room name to reservation
+	reservation.Room.RoomName = room.RoomName
+
 	//put start and end dates into strings and into Reservation
 	startDT := reservation.StartDate.Format("01-02-2006")
 	endDT := reservation.EndDate.Format("01-02-2006")
@@ -194,7 +203,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	//golang data format - 2020-01-01 -- 01//02 03:04:05PM '06  -0700
 	layout := "01-02-2006"
 
-	log.Printf("\n starttDt before parsing: %s", startDT)
+	log.Printf("\n startDt before parsing: %s", startDT)
 	log.Printf("\n endtDt before parsing: %s", endDT)
 
 	startDTParsed, err := time.Parse(layout, startDT)
