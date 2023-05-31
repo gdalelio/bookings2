@@ -18,7 +18,8 @@ Includes as part of the project components from the following:
 - [sweetalert2 v10](https://sweetalert2.github.io/v10.html) - for modal alerts
 - Alex Edwards' [SCS](https://github.com/alexedwards/scs) - for Session Management
 - Justinas Stankevičius' [nosurf v2](https://github.com/alexedwards/scs/v2)
-- Jared Reich's [notie](https://github.com/jaredreich/notie) notification 
+- Jared Reich's [notie](https://github.com/jaredreich/notie) notification
+- [Vanilla JS Datepicker](https://mymth.github.io/vanillajs-datepicker/#/) - for picking dates
 - Alex Saskevich's [govalidator](https://github.com/asaskevich/govalidator) - for field validations
 - Buffalo's [Pop](https://github.com/gobuffalo/pop) - for database configuration
 - Jack Christensen's [pgx](https://githib.com/jackc/pgx)- for PostgreSQL database connections
