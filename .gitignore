@@ -2,3 +2,5 @@
 index_old.html
 testresults.txt
 database.yml
+internal/render/coverage.out
+coverage.out
