@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"log"
 	"net/http"
 	"strconv"
@@ -16,6 +16,7 @@ import (
 	"github.com/gdalelio/bookings/internal/render"
 	"github.com/gdalelio/bookings/internal/repository"
 	"github.com/gdalelio/bookings/internal/repository/dbrepo"
+	"github.com/go-chi/chi/v5"
 )
 
 // Repo the repository used by the handlers
@@ -99,14 +100,30 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, i := range rooms {
-		m.App.InfoLog.Println("Room:", i.ID, i.RoomName)
-	}
+	//no rooms are available and redirecting to the search-avaialbility screen
+	if len(rooms) == 0 {
+		m.App.Session.Put(r.Context(), "error", "No avaialabilty")
+		http.Redirect(w, r, "/search-availability", http.StatusSeeOther)
+		return
 
-	_, err = w.Write([]byte(fmt.Sprintf("Start date is %s and end date is %s", start, end)))
-	if err != nil {
-		helpers.ServerError(w, err)
 	}
+	//creting a map of strings that contains the room names
+	data := make(map[string]interface{})
+	//storing the rooms list into the data element to render to the page choose-room.page.tmpl
+	data["rooms"] = rooms
+
+	//create the start of a resrvation with start and end dates they searched
+	reservation := models.Reservation{
+		StartDate: startDTParsed,
+		EndDate:   endDTParsed,
+	}
+	//store in the session for use with reservation
+	m.App.Session.Put(r.Context(), "reservation", reservation)
+
+	render.Template(w, r, "choose-room.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
+
 }
 
 // jsonResponse keep as close to code that uses this type
@@ -135,18 +152,38 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 // Reservation is the check availability page handler
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	//create var to hold the empty reservation type
-	var emptyReservation models.Reservation
+	//get reservation variable in the session and stick the room id into the varaiable and put into reservation
+	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		helpers.ServerError(w, errors.New("cannot get reservation from session"))
+		return
+	}
+	//retrieve room name by Id
+	room, err := m.DB.GetRoomByID(reservation.RoomID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	//add room name to reservation
+	reservation.Room.RoomName = room.RoomName
+
+	//put start and end dates into strings and into Reservation
+	startDT := reservation.StartDate.Format("01-02-2006")
+	endDT := reservation.EndDate.Format("01-02-2006")
+	stringMap := make(map[string]string)
+	stringMap["start_date"] = startDT
+	stringMap["end_date"] = endDT
 
 	//create a map to store the entries on the form
 	data := make(map[string]interface{})
 
 	//store the data into the emptyReservation
-	data["reservation"] = emptyReservation
+	data["reservation"] = reservation
 
 	render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
-		Form: forms.New(nil),
-		Data: data,
+		Form:      forms.New(nil),
+		Data:      data,
+		StringMap: stringMap,
 	})
 
 }
@@ -164,9 +201,9 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	endDT := r.Form.Get("end_date")
 
 	//golang data format - 2020-01-01 -- 01//02 03:04:05PM '06  -0700
-	layout := `02-01-2006`
+	layout := "01-02-2006"
 
-	log.Printf("\n starttDt before parsing: %s", startDT)
+	log.Printf("\n startDt before parsing: %s", startDT)
 	log.Printf("\n endtDt before parsing: %s", endDT)
 
 	startDTParsed, err := time.Parse(layout, startDT)
@@ -273,4 +310,25 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 	render.Template(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
 		Data: data,
 	})
+}
+
+// ChooseRoom displays the list of available
+func (m *Repository) ChooseRoom(w http.ResponseWriter, r *http.Request) {
+	//get the id from the room chosen on the choose-room page id 1 -> General's Room, id 2 -> Major's Room
+	roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	//get reservation variable in the session and stick the room id into the varaiable and put into reservation
+	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		helpers.ServerError(w, err)
+		return
+	}
+	//putting the roomID into the reservation variable
+	reservation.RoomID = roomID
+	m.App.Session.Put(r.Context(), "reservation", reservation)
+
+	http.Redirect(w, r, "/make-reservation", http.StatusSeeOther)
 }
